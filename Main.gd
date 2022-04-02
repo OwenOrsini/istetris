@@ -17,8 +17,8 @@ func start_game():
 	spawn_shape()
 	
 func spawn_shape():
-	$FallTimer.start(.3)
-	$MoveTimer.start(.05)	
+	$FallTimer.start(.5)
+	$MoveTimer.start(.1)	
 	$Shape.position = start_position
 	$Shape.create()
 	
@@ -31,7 +31,7 @@ func game_over():
 	$FallTimer.stop()
 	$MoveTimer.stop()
 	$TileMap.draw([])
-	emit_signal("game_over")
+	#emit_signal("game_over")
 	
 func handle_down_collision():
 	$FallTimer.stop()

@@ -38,7 +38,7 @@ func _get_shape(type):
 						
 func create():
 	var rand = randi() % shape_type.size()
-	blocks = _get_shape(shape_type.I)
+	blocks = _get_shape(rand)
 	
 func get_translated_blocks(new_pos):
 	var new_blocks = []
