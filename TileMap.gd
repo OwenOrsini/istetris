@@ -48,7 +48,7 @@ func get_ghost_blocks(blocks):
 	var max_block = Vector2.ZERO
 	for block in blocks:
 		for sblock in static_blocks:
-			if block.x == sblock.x:
+			if block.x == sblock.x and block.y < sblock.y:
 				var dist = (block - sblock).length() -1
 				if dist < shortest_len:
 					shortest_len = dist

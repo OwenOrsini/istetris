@@ -21,8 +21,8 @@ func _ready():
 	connect("side_collision", self, "handle_side_collision")
 
 func start_game():
+	$Music.play()
 	$TileMap.clear_static_blocks()
-	print("start")
 	score = 0
 	$HUD.update_score_display(score)
 	spawn_shape()
@@ -38,6 +38,7 @@ func spawn_shape():
 	$TileMap.draw(blocks, $Shape.type)
 
 func game_over():
+	$Music.stop()
 	$HUD.game_over()
 	$FallTimer.stop()
 	$MoveTimer.stop()
@@ -70,15 +71,15 @@ func move(direction, type):
 	$Shape.position += direction
 	
 func move_shape_down():
-	if not Input.is_action_pressed("ui_down"):
+	if not Input.is_action_pressed("down"):
 		move(Vector2.DOWN, "down_collision")
 	
 func move_input():
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("left"):
 		move(Vector2.LEFT, "side_collision")
-	if Input.is_action_pressed("ui_right"):
+	if Input.is_action_pressed("right"):
 		move(Vector2.RIGHT, "side_collision")
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_pressed("down"):
 		move(Vector2.DOWN, "down_collision")
 		
 func rotate_shape():
@@ -100,14 +101,14 @@ func rotate_shape():
 	$TileMap.draw(blocks, $Shape.type)
 	$Shape.blocks = rot_blocks
 	
-func _input(event):
-	if Input.is_action_just_pressed("ui_up"):
+func _input(_event):
+	if Input.is_action_just_pressed("rotate"):
 		rotate_shape()
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("drop"):
 		var blocks = $Shape.get_translated_blocks($Shape.position)
 		var ghosts = $TileMap.get_ghost_blocks(blocks)
+		$Shape.position += Vector2(0, $TileMap.ghost_position)
 		$TileMap.draw(ghosts, $Shape.type)
-		pass
 
 func _draw():
 	var cell_size = $TileMap.cell_size

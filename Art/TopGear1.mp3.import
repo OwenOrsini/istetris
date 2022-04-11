@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/TopGear1.mp3-0b2f004e583cc2095b465b1d304dd21b.mp3str"
+
+[deps]
+
+source_file="res://Art/TopGear1.mp3"
+dest_files=[ "res://.import/TopGear1.mp3-0b2f004e583cc2095b465b1d304dd21b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

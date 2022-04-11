@@ -19,8 +19,8 @@ func _ready():
 	randomize()
 	pass
 
-func _get_shape(type):
-	match type:
+func _get_shape(_type):
+	match _type:
 		shape_type.I:
 			return [Vector2(-1, 0),Vector2(0, 0),Vector2(1, 0),Vector2(2, 0)]
 		shape_type.L:
@@ -36,8 +36,8 @@ func _get_shape(type):
 		shape_type.T:
 			return [Vector2(-1, 0),Vector2(0, 0),Vector2(0, -1),Vector2(1, 0)]
 
-func _get_pivot(type):
-	match type:
+func _get_pivot(_type):
+	match _type:
 		shape_type.O:
 			return Vector2(-.5,.5)
 	return Vector2.ZERO
@@ -53,9 +53,9 @@ func get_translated_blocks(new_pos):
 		new_blocks.append(block + new_pos)
 	return new_blocks
 
-func translated_blocks(blocks, pos = position):
+func translated_blocks(_blocks, pos = position):
 	var new_blocks = []
-	for block in blocks:
+	for block in _blocks:
 		new_blocks.append(block + pos)
 	return new_blocks
 
