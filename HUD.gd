@@ -3,11 +3,15 @@ extends CanvasLayer
 signal start_game
 
 func _ready():
-	pass
+	$MenuScreen/GameOverLabel.hide()
 	
 func game_over():
-	$GameOverLabel.show()
+	$MenuScreen.show()	
+	$MenuScreen/GameOverLabel.show()
+	
+func update_score_display(score):
+	$ScoreLabel.text = "Score: %s" % score
 
 func _on_start_button_pressed():
-	$GameOverLabel.hide()
+	$MenuScreen.hide()
 	emit_signal("start_game")
