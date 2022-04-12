@@ -3,15 +3,17 @@ extends Node2D
 signal down_collision
 signal side_collision
 
-# add music
 # add increase difficulty over time/score
 var score
+var fall_speed
+var current_type
+var current_level
+var completed_rows
 
 func _ready():
 	$HUD.connect("start_game", self, "start_game")
 	
 	$FallTimer.connect("timeout", self, "move_shape_down")
-	$MoveTimer.connect("timeout", self, "move_input")
 	
 	$TileMap.connect("map_filled", self, "game_over")
 	$TileMap.connect("rows_completed", self, "update_score")
@@ -19,35 +21,46 @@ func _ready():
 	#callback functions for block collision handling
 	connect("down_collision", self, "handle_down_collision")
 	connect("side_collision", self, "handle_side_collision")
+	current_type = randi() % $Shape.shape_type.size()
 
 func start_game():
+	score = 0
+	current_level = 1
+	fall_speed = .5
+	completed_rows = 0
 	$Music.play()
 	$TileMap.clear_static_blocks()
-	score = 0
 	$HUD.update_score_display(score)
 	spawn_shape()
 	
 func spawn_shape():
-	$FallTimer.start(.5)
-	$MoveTimer.start(.1)
+	$FallTimer.start(fall_speed)
 	$Shape.position = $TileMap.block_start
-	$Shape.create()
-	
-	#draw the blocks to the tilemap
-	var blocks = $Shape.get_translated_blocks($Shape.position)
-	$TileMap.draw(blocks, $Shape.type)
+	$Shape.create(current_type)
+	var next_type = randi() % $Shape.shape_type.size()
+	var next_blocks = $Shape.translated_blocks($Shape._get_shape(next_type), Vector2.ZERO)
+	$HUD.update_next_shape(next_blocks, next_type)
+	current_type = next_type
+	$TileMap.draw($Shape.get_translated_blocks($Shape.position), $Shape.type)
 
 func game_over():
 	$Music.stop()
 	$HUD.game_over()
 	$FallTimer.stop()
-	$MoveTimer.stop()
 	$TileMap.draw_static()
 	
 func update_score(rows):
 	var row_score = 50
 	score += row_score * rows
 	$HUD.update_score_display(score)
+	completed_rows += rows
+	if completed_rows > 2:
+		update_level()
+	
+func update_level():
+	current_level += 1
+	fall_speed = .4
+	
 	
 func handle_down_collision():
 	$FallTimer.stop()
@@ -71,16 +84,7 @@ func move(direction, type):
 	$Shape.position += direction
 	
 func move_shape_down():
-	if not Input.is_action_pressed("down"):
-		move(Vector2.DOWN, "down_collision")
-	
-func move_input():
-	if Input.is_action_pressed("left"):
-		move(Vector2.LEFT, "side_collision")
-	if Input.is_action_pressed("right"):
-		move(Vector2.RIGHT, "side_collision")
-	if Input.is_action_pressed("down"):
-		move(Vector2.DOWN, "down_collision")
+	move(Vector2.DOWN, "down_collision")
 		
 func rotate_shape():
 	var rot_blocks = $Shape.get_rotated_blocks()
@@ -109,6 +113,12 @@ func _input(_event):
 		var ghosts = $TileMap.get_ghost_blocks(blocks)
 		$Shape.position += Vector2(0, $TileMap.ghost_position)
 		$TileMap.draw(ghosts, $Shape.type)
+	if Input.is_action_pressed("left"):
+		move(Vector2.LEFT, "side_collision")
+	if Input.is_action_pressed("right"):
+		move(Vector2.RIGHT, "side_collision")
+	if Input.is_action_pressed("down"):
+		move(Vector2.DOWN, "down_collision")
 
 func _draw():
 	var cell_size = $TileMap.cell_size

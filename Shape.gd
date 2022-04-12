@@ -3,7 +3,6 @@ extends Node2D
 # create all the different shapes that can spawn
 var blocks
 var type
-var color
 
 enum shape_type{
 	I,
@@ -17,7 +16,6 @@ enum shape_type{
 
 func _ready():
 	randomize()
-	pass
 
 func _get_shape(_type):
 	match _type:
@@ -42,10 +40,9 @@ func _get_pivot(_type):
 			return Vector2(-.5,.5)
 	return Vector2.ZERO
 						
-func create():
-	var rand = randi() % shape_type.size()
-	type = rand
-	blocks = _get_shape(rand)
+func create(_type):
+	type = _type
+	blocks = _get_shape(_type)
 	
 func get_translated_blocks(new_pos):
 	var new_blocks = []
