@@ -53,14 +53,13 @@ func update_score(rows):
 	var row_score = 50
 	score += row_score * rows
 	$HUD.update_score_display(score)
-	completed_rows += rows
-	if completed_rows > 2:
-		update_level()
+#	completed_rows += rows
+#	if completed_rows > 2:
+#		update_level()
 	
-func update_level():
-	current_level += 1
-	fall_speed = .4
-	
+#func update_level():
+#	current_level += 1
+#	fall_speed = .4
 	
 func handle_down_collision():
 	$FallTimer.stop()
