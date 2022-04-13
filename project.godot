@@ -19,7 +19,6 @@ config/icon="res://icon.png"
 window/size/width=960
 window/size/height=680
 window/size/resizable=false
-window/size/borderless=true
 
 [input]
 

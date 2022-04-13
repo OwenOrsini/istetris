@@ -11,7 +11,7 @@ var current_level
 var completed_rows
 
 func _ready():
-	$HUD.connect("start_game", self, "start_game")
+	$Menu/MenuScreen.connect("start_game", self, "start_game")
 	
 	$FallTimer.connect("timeout", self, "move_shape_down")
 	
@@ -45,7 +45,7 @@ func spawn_shape():
 
 func game_over():
 	$Music.stop()
-	$HUD.game_over()
+	$Menu/MenuScreen.game_over()
 	$FallTimer.stop()
 	$TileMap.draw_static()
 	
@@ -53,13 +53,14 @@ func update_score(rows):
 	var row_score = 50
 	score += row_score * rows
 	$HUD.update_score_display(score)
-#	completed_rows += rows
-#	if completed_rows > 2:
-#		update_level()
+	completed_rows += rows
+	if completed_rows > 10 * current_level and current_level < 4:
+		update_level()
 	
-#func update_level():
-#	current_level += 1
-#	fall_speed = .4
+func update_level():
+	current_level += 1
+	fall_speed = .6 - (float(current_level) / 10.0)
+	$HUD.update_level(current_level)
 	
 func handle_down_collision():
 	$FallTimer.stop()
@@ -104,7 +105,8 @@ func rotate_shape():
 	$TileMap.draw(blocks, $Shape.type)
 	$Shape.blocks = rot_blocks
 	
-func _input(_event):
+func _unhandled_input(event):
+	print("Game inputs handling")
 	if Input.is_action_just_pressed("rotate"):
 		rotate_shape()
 	if Input.is_action_just_pressed("drop"):

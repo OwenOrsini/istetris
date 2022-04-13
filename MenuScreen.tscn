@@ -1,0 +1,105 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://tetris_theme.tres" type="Theme" id=1]
+[ext_resource path="res://font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://MenuScreen.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Art/Dyuthi-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 100
+outline_color = Color( 0, 0, 0, 1 )
+use_filter = true
+extra_spacing_top = 10
+font_data = SubResource( 1 )
+
+[node name="Menu" type="CanvasLayer"]
+
+[node name="MenuScreen" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_neighbour_top = NodePath("StartButton")
+focus_neighbour_bottom = NodePath("QuitButton")
+focus_mode = 2
+input_pass_on_modal_close_click = false
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="MenuScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0.576471, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOverLabel" type="Label" parent="MenuScreen"]
+visible = false
+anchor_left = 0.501
+anchor_right = 0.501
+margin_left = -148.96
+margin_top = 114.0
+margin_right = 148.04
+margin_bottom = 232.0
+custom_fonts/font = ExtResource( 2 )
+text = "Game Over"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="Button" parent="MenuScreen"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -95.0
+margin_top = -20.0
+margin_right = 95.0
+margin_bottom = 44.0
+focus_neighbour_bottom = NodePath("../QuitButton")
+mouse_default_cursor_shape = 2
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="MenuScreen"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -96.0
+margin_top = 68.0
+margin_right = 96.0
+margin_bottom = 132.0
+focus_neighbour_top = NodePath("../StartButton")
+mouse_default_cursor_shape = 2
+theme = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="MenuScreen"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -156.5
+margin_top = 100.0
+margin_right = 156.5
+margin_bottom = 111.0
+custom_fonts/font = SubResource( 2 )
+text = "Is Tetris"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameOverTimer" type="Timer" parent="MenuScreen"]
+one_shot = true
+
+[connection signal="pressed" from="MenuScreen/StartButton" to="MenuScreen" method="_on_StartButton_pressed"]
+[connection signal="pressed" from="MenuScreen/QuitButton" to="MenuScreen" method="_on_QuitButton_pressed"]

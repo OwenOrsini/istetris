@@ -11,9 +11,9 @@ var max_bounds
 
 func _ready():
 	var screen = get_viewport().size
-	var screen_middle = (floor(screen.x / 32)/2)
-	block_start = Vector2(screen_middle, 0)
-	min_bounds = Vector2(screen_middle -5, 0)
+	var screen_middle = (floor(screen.x / cell_size.x)/2)
+	block_start = Vector2(screen_middle, 1)
+	min_bounds = Vector2(screen_middle -5, 1)
 	max_bounds = Vector2(screen_middle +5, 20)
 	static_blocks = []
 	
